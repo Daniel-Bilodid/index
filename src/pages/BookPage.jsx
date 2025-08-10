@@ -10,6 +10,7 @@ import { db } from "../firebase";
 import { useParams } from "react-router-dom";
 import SearchBar from "../components/searchBar/SearchBar";
 import Modal from "../components/modal/Modal";
+import "./bookPage.scss";
 
 function BookPage() {
   const { bookName } = useParams();

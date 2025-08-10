@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "BazaART";
+  src: url("../fonts/BazaART.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 .page {
   display: flex;
   flex-direction: column;
@@ -12,8 +20,6 @@
   padding: 0;
   margin-top: 20px;
   width: 100%;
-  //   max-height: calc(15 * 2.5rem);
-  //   overflow-y: auto;
 }
 
 .list li {
@@ -29,4 +35,12 @@
     background: #f1f3f5;
     transform: translateY(-2px);
   }
+}
+h1 {
+  font-family: "BazaART", sans-serif;
+  color: white;
+  font-size: 300px;
+  padding: 0px;
+  margin: 0px;
+  margin-top: -100px;
 }

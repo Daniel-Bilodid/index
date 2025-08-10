@@ -1,4 +1,5 @@
 import { React, useState } from "react";
+import "./searchBar.scss";
 
 function SearchBar({ placeholder, onSearch, onAddClick }) {
   const [query, setQuery] = useState("");

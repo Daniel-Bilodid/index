@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "BazaART";
+  src: url("../fonts/BazaART.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 .page {
   display: flex;
   flex-direction: column;
@@ -25,4 +33,12 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
+}
+h2 {
+  font-family: "BazaART", sans-serif;
+  color: white;
+  font-size: 150px;
+  padding: 0px;
+  margin: 0px;
+  margin-top: -50px;
 }

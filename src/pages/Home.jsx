@@ -93,23 +93,6 @@ function Home() {
             onClick={() => navigate(`/book/${encodeURIComponent(book)}`)}
           >
             <span>{book}</span>
-            {/* <button
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteBook(book);
-              }}
-              aria-label={`Видалити ${book}`}
-              style={{
-                cursor: "pointer",
-                background: "transparent",
-                border: "none",
-                fontSize: "16px",
-                padding: "10px",
-                color: "red",
-              }}
-            >
-              ✖
-            </button> */}
           </li>
         ))}
       </ul>
