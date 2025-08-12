@@ -73,6 +73,18 @@ function BookPage() {
     if (!bookDoc) return;
 
     const namesCol = collection(db, "books", bookDoc.id, "names");
+    const namesSnapshot = await getDocs(namesCol);
+
+    // Проверка на точный дубликат (без учета регистра и лишних пробелов)
+    const exists = namesSnapshot.docs.some(
+      (doc) =>
+        doc.data().name.trim().toLowerCase() === name.trim().toLowerCase()
+    );
+    if (exists) {
+      console.warn("Таке ім'я вже є у базі");
+      return;
+    }
+
     await addDoc(namesCol, { name, page: "" });
 
     await fetchNames();
