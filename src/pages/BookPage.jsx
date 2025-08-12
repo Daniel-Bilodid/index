@@ -184,8 +184,8 @@ function BookPage() {
       </ul>
 
       <Modal
-        isOpen={true}
-        // onClose={() => setIsModalOpen(false)}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         onSubmit={handleAddName}
         title="Додати ім'я"
         placeholder="Додати ім'я"
