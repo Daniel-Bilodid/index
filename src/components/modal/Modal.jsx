@@ -32,7 +32,12 @@ function Modal({ isOpen, onClose, onSubmit, title, placeholder }) {
             type="text"
             placeholder={placeholder}
             value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) => {
+              const cleaned = e.target.value
+                .replace(/[\u000B\u2028\u2029\r\n]/g, "")
+                .replace(/\u00A0/g, " ");
+              setValue(cleaned);
+            }}
           />
           <div className="actions">
             <button type="submit">Додати</button>
