@@ -20,6 +20,7 @@
     margin-top: 0;
     margin-bottom: 16px;
     font-size: 18px;
+    font-family: Sitka, sans-serif;
   }
 
   input {
@@ -32,8 +33,8 @@
 
     &:focus {
       outline: none;
-      border-color: #6c63ff;
-      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+      border-color: #bf4b56;
+      box-shadow: 0 0 0 3px rgba(98, 48, 42, 0.219);
     }
   }
 
@@ -50,11 +51,11 @@
       transition: background 0.2s ease;
 
       &:first-child {
-        background: #6c63ff;
+        background: #bf4b56;
         color: white;
 
         &:hover {
-          background: #574fd6;
+          background: #533837;
         }
       }
 

@@ -37,8 +37,15 @@
 h2 {
   font-family: "BazaART", sans-serif;
   color: white;
-  font-size: 150px;
-  padding: 0px;
-  margin: 0px;
+  font-size: clamp(
+    32px,
+    8vw,
+    100px
+  ); // минимум 32px, максимум 100px, адаптив через vw
+  padding: 0;
+  margin: 0;
   margin-top: -50px;
+  white-space: nowrap; // запрет переноса
+  overflow: hidden;
+  text-overflow: ellipsis; // обрезка с троеточием
 }

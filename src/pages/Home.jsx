@@ -23,10 +23,13 @@ function Home() {
     async function fetchBooks() {
       const booksCol = collection(db, "books");
       const booksSnapshot = await getDocs(booksCol);
-      const booksList = booksSnapshot.docs.map((doc) => ({
+      let booksList = booksSnapshot.docs.map((doc) => ({
         id: doc.id,
         name: doc.data().name,
       }));
+
+      booksList = booksList.sort((a, b) => a.name.localeCompare(b.name));
+
       setBooks(booksList.map((b) => b.name));
       setFiltered(booksList.map((b) => b.name));
     }
