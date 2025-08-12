@@ -16,13 +16,15 @@ import "./bookPage.scss";
 function BookPage() {
   const { bookName } = useParams();
 
-  // Теперь каждый элемент — объект { name, page, id }
   const [names, setNames] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Подгружаем имена + страницы и id документов (чтобы потом можно обновлять)
+  // для редактирования имени
+  const [editingId, setEditingId] = useState(null);
+  const [editingValue, setEditingValue] = useState("");
+
   async function fetchNames() {
     const booksCol = collection(db, "books");
     const booksSnapshot = await getDocs(booksCol);
@@ -37,7 +39,7 @@ function BookPage() {
     let namesList = namesSnapshot.docs.map((doc) => ({
       id: doc.id,
       name: doc.data().name,
-      page: doc.data().page || "", // если нет, пустая строка
+      page: doc.data().page || "",
     }));
 
     namesList.sort((a, b) => a.name.localeCompare(b.name));
@@ -63,7 +65,6 @@ function BookPage() {
     );
   };
 
-  // Добавляем новое имя с пустой страницей
   const handleAddName = async (name) => {
     const booksCol = collection(db, "books");
     const booksSnapshot = await getDocs(booksCol);
@@ -75,7 +76,6 @@ function BookPage() {
     const namesCol = collection(db, "books", bookDoc.id, "names");
     const namesSnapshot = await getDocs(namesCol);
 
-    // Проверка на точный дубликат (без учета регистра и лишних пробелов)
     const exists = namesSnapshot.docs.some(
       (doc) =>
         doc.data().name.trim().toLowerCase() === name.trim().toLowerCase()
@@ -86,11 +86,9 @@ function BookPage() {
     }
 
     await addDoc(namesCol, { name, page: "" });
-
     await fetchNames();
   };
 
-  // Удаляем имя
   const handleDeleteName = async (nameToDelete) => {
     const booksCol = collection(db, "books");
     const booksSnapshot = await getDocs(booksCol);
@@ -111,9 +109,7 @@ function BookPage() {
     await fetchNames();
   };
 
-  // Обновляем поле page для имени
   const handlePageChange = async (id, newPage) => {
-    // Обновляем локально для быстрого UX
     const updatedNames = names.map((item) =>
       item.id === id ? { ...item, page: newPage } : item
     );
@@ -124,7 +120,6 @@ function BookPage() {
       )
     );
 
-    // Обновляем в Firestore
     const booksCol = collection(db, "books");
     const booksSnapshot = await getDocs(booksCol);
     const bookDoc = booksSnapshot.docs.find(
@@ -134,6 +129,40 @@ function BookPage() {
 
     const nameDocRef = doc(db, "books", bookDoc.id, "names", id);
     await updateDoc(nameDocRef, { page: newPage });
+  };
+
+  const handleNameClick = (id, currentName) => {
+    setEditingId(id);
+    setEditingValue(currentName);
+  };
+
+  const handleNameChange = (e) => {
+    setEditingValue(e.target.value);
+  };
+
+  const handleNameSave = async (id) => {
+    const cleaned = editingValue.trim().replace(/[\r\n]+/g, " ");
+    const updatedNames = names.map((item) =>
+      item.id === id ? { ...item, name: cleaned } : item
+    );
+    setNames(updatedNames);
+    setFiltered(
+      updatedNames.filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+
+    const booksCol = collection(db, "books");
+    const booksSnapshot = await getDocs(booksCol);
+    const bookDoc = booksSnapshot.docs.find(
+      (doc) => doc.data().name === bookName
+    );
+    if (!bookDoc) return;
+
+    const nameDocRef = doc(db, "books", bookDoc.id, "names", id);
+    await updateDoc(nameDocRef, { name: cleaned });
+
+    setEditingId(null);
   };
 
   return (
@@ -163,7 +192,26 @@ function BookPage() {
               onChange={(e) => handlePageChange(id, e.target.value)}
             />
 
-            <span style={{ flexGrow: 1 }}>{name}</span>
+            {editingId === id ? (
+              <input
+                type="text"
+                value={editingValue}
+                onChange={handleNameChange}
+                onBlur={() => handleNameSave(id)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleNameSave(id);
+                }}
+                style={{ flexGrow: 1, padding: "5px" }}
+                autoFocus
+              />
+            ) : (
+              <span
+                style={{ flexGrow: 1, cursor: "pointer" }}
+                onClick={() => handleNameClick(id, name)}
+              >
+                {name}
+              </span>
+            )}
 
             <button
               onClick={() => handleDeleteName(name)}
