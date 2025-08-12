@@ -18,7 +18,7 @@ function Modal({ isOpen, onClose, onSubmit, title, placeholder }) {
     if (value.trim()) {
       onSubmit(value);
       setValue("");
-      onClose();
+      //   onClose();
     }
   };
 
